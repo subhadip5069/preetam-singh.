@@ -1,0 +1,70 @@
+
+
+<%- include('layout/navbar') %>
+<main class="flex-1 overflow-y-auto p-6">
+    <div class="container mt-5">
+      <h1 class="mb-4">Create a New Course</h1>
+  
+      <form action="/admin/course/add" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Course Title</label>
+          <input type="text" name="title" class="form-control" required />
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-control" rows="4" required></textarea>
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Course Features</label>
+          <div id="feature-container">
+            <div class="input-group mb-2">
+              <input type="text" name="features[]" class="form-control" placeholder="Feature 1" required />
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="addFeature()">Add Another Feature</button>
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Image</label>
+          <input type="file" name="image" class="form-control" required />
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Price (₹)</label>
+          <input type="number" name="price" class="form-control" required />
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Discount (%)</label>
+          <input type="number" name="discount" class="form-control" required />
+        </div>   
+        <div class="mb-3">
+          <label class="form-label">Plan Validity</label>
+          <input type="text" name="validated" class="form-control" required />
+        </div>
+      
+        <button type="submit" class="btn btn-primary">Create Course</button>
+      </form>
+      
+      <script>
+        let featureCount = 1;
+        function addFeature() {
+          featureCount++;
+          const container = document.getElementById('feature-container');
+          const div = document.createElement('div');
+          div.className = 'input-group mb-2';
+          div.innerHTML = `
+            <input type="text" name="features[]" class="form-control" placeholder="Feature ${featureCount}" required />
+          `;
+          container.appendChild(div);
+        }
+      </script>
+      
+    </div>
+  </main>
+
+  
+
+<%- include('layout/footer') %>

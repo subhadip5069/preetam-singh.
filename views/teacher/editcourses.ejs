@@ -1,0 +1,67 @@
+<%- include('layout/navbar') %>
+
+<main class="flex-1 overflow-y-auto p-6">
+  <div class="container mt-5">
+    <h2 class="mb-4">Edit Course</h2>
+
+    <form action="/admin/course/update/<%= course._id %>" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">Course Title</label>
+        <input type="text" name="title" class="form-control" value="<%= course.title %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" class="form-control" rows="3" required><%= course.description %></textarea>
+      </div>
+
+      <div id="feature-container" class="mb-3">
+        <label class="form-label">Features</label>
+        <% course.features.forEach((feature, index) => { %>
+          <div class="feature-inputs mb-2">
+            <input type="text" name="features[]" class="form-control" value="<%= feature %>" required>
+          </div>
+        <% }) %>
+      </div>
+      <button type="button" class="btn btn-secondary mb-3" onclick="addFeature()">Add Feature</button>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Course Image</label>
+        <input type="file" name="image" class="form-control">
+        <% if (course.image) { %>
+          <img src="/<%= course.image %>" alt="Current Image" class="img-thumbnail mt-2" style="max-height: 150px;">
+        <% } %>
+      </div>
+
+      <div class="mb-3">
+        <label for="price" class="form-label">Price (₹)</label>
+        <input type="number" name="price" class="form-control" value="<%= course.price %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="discount" class="form-label">Discount (%)</label>
+        <input type="number" name="discount" class="form-control" value="<%= course.discount %>" required>
+      </div>
+      <div class="mb-3">
+        <label for="validated" class="form-label">Plan Validity (Days)</label>
+        <input type="text" name="validated" class="form-control" value="<%= course.validated %>" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update Course</button>
+    </form>
+  </div>
+
+  <script>
+    function addFeature() {
+      const container = document.getElementById("feature-container");
+      const div = document.createElement("div");
+      div.classList.add("feature-inputs", "mb-2");
+      div.innerHTML = `
+        <input type="text" name="features[]" class="form-control" placeholder="New Feature" required />
+      `;
+      container.appendChild(div);
+    }
+  </script>
+</main>
+
+<%- include('layout/footer') %>

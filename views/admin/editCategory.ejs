@@ -1,0 +1,28 @@
+<%- include('partial/navbar') %>
+<main class="flex-1 overflow-y-auto p-6">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        form, table { margin: 20px auto; width: 60%; }
+        input[type="text"] { width: 70%; padding: 8px; }
+        input[type="submit"], .btn { padding: 8px 16px; margin-left: 8px; }
+        table { border-collapse: collapse; width: 60%; }
+        table, th, td { border: 1px solid #999; }
+        th, td { padding: 10px; text-align: left; }
+        .actions form { display: inline; }
+    </style>
+
+
+<h2 style="text-align:center;">Edit Category</h2>
+<form action="/admin/category/update/<%= categories._id %>" method="POST">
+    <input type="text" name="name" placeholder="Enter category name" required value="<%= categories.name %>">
+   <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+</main>
+
+
+<%- include('partial/sidebar') %>
+
+
+
+

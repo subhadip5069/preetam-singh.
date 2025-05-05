@@ -1,0 +1,106 @@
+<%- include('partial/navbar') %>
+
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto p-6">
+
+  <h2>Withdrawal Requests</h2>
+
+  <!-- Search Inputs -->
+  <div class="d-flex flex-wrap gap-3 mb-3">
+    <input type="text" id="searchInput" placeholder="Search by name, phone, or email..." class="form-control w-50">
+    <input type="date" id="dateInput" class="form-control">
+  </div>
+
+  <table class="table table-bordered table-striped mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Bonus</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Details</th>
+        <th>Status</th>
+        <th>Requested</th>
+        <th>Processed</th>
+        <th>Txn ID</th>
+        <th>Notes</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody id="withdrawalTableBody">
+      <% withdrawals.reverse().forEach((w, index) => { %>
+        <tr data-requested="<%= new Date(w.requestedAt).toISOString().split('T')[0] %>">
+          <td><%= index + 1 %></td>
+          <td><%= w.userId?.name || 'N/A' %></td>
+          <td><%= w.userId?.phone || 'N/A' %></td>
+          <td><%= w.userId?.email || 'N/A' %></td>
+          <td><%= w.userId?.role || 'N/A' %></td>
+          <td>₹ <%= w.userId?.mybonus || 0 %></td>
+          <td>₹ <%= w.amount %></td>
+          <td><%= w.paymentMethod %></td>
+          <td>
+            <% if (w.paymentMethod === 'UPI') { %>
+              <%= w.upiId %>
+            <% } else if (w.paymentMethod === 'Bank') { %>
+              <%= w.bankDetails?.accountHolderName %> - <%= w.bankDetails?.accountNumber %>
+            <% } else { %>
+              N/A
+            <% } %>
+          </td>
+         <td>
+           <span style="background-color: <%= w.status === 'approved' ? 'green' : w.status === 'rejected' ? 'red' : w.status === 'completed' ? 'orange' : 'goldenrod' %> color: white; padding: 5px; border-radius: 5px; font-size: 12px; font-weight: bold;">
+             <%= (w.status || 'Pending').toUpperCase() %>
+           </span>
+         </td>
+          <td><%= new Date(w.requestedAt).toLocaleString() %></td>
+          <td><%= w.processedAt ? new Date(w.processedAt).toLocaleString() : '-' %></td>
+          <td><%= w.transactionId || '-' %></td>
+          <td><%= w.notes || '-' %></td>
+          <td>
+            <form action="/admin/update/<%= w._id %>" method="POST" class="d-flex flex-column gap-1">
+              <select name="status" class="form-select form-select-sm" required>
+                <option value="">--Select--</option>
+                <option value="approved" <%= w.status === 'approved' ? 'selected' : '' %>>Approve</option>
+                <option value="rejected" <%= w.status === 'rejected' ? 'selected' : '' %>>Reject</option>
+                <option value="completed" <%= w.status === 'completed' ? 'selected' : '' %>>Complete</option>
+              </select>
+              <input type="text" name="transactionId" placeholder="Transaction ID" class="form-control form-control-sm" value="<%= w.transactionId || '' %>">
+              <input type="text" name="notes" placeholder="Notes" class="form-control form-control-sm" value="<%= w.notes || '' %>">
+              <button type="submit" class="btn btn-sm btn-success mt-1">Update</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+</main>
+
+<%- include('partial/sidebar') %>
+
+<!-- Search + Date Filter Script -->
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const dateInput = document.getElementById('dateInput');
+  const tableRows = document.querySelectorAll('#withdrawalTableBody tr');
+
+  function filterTable() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedDate = dateInput.value;
+
+    tableRows.forEach(row => {
+      const rowText = row.innerText.toLowerCase();
+      const rowDate = row.dataset.requested;
+      const matchesSearch = rowText.includes(searchTerm);
+      const matchesDate = !selectedDate || rowDate === selectedDate;
+      row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', filterTable);
+  dateInput.addEventListener('change', filterTable);
+</script>

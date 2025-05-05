@@ -1,0 +1,40 @@
+<%- include('partial/navbar') %>
+
+<main class="flex-1 p-6">
+  <div class="container mt-5">
+    <h1 class="mb-4">Edit About Us</h1>
+
+    <form action="/admin/about/update/<%= aboutUs._id%>" method="POST" enctype="multipart/form-data" class="card p-4 shadow-lg rounded">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" class="form-control" value="<%= aboutUs?.title || '' %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control" rows="4" required><%= aboutUs?.description || '' %></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="link" class="form-label">Link</label>
+        <input type="text" name="link" id="link" class="form-control" value="<%= aboutUs?.link || '' %>" required>
+      </div>
+
+      <% if (aboutUs?.image) { %>
+        <div class="mb-3">
+          <p>Current Image:</p>
+          <img src="/<%= aboutUs.image%>" alt="About Us Image" class="img-thumbnail" width="250">
+        </div>
+      <% } %>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload New Image (optional)</label>
+        <input type="file" name="image" id="image" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update About Us</button>
+    </form>
+  </div>
+</main>
+
+<%- include('partial/sidebar') %>

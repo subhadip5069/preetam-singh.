@@ -1,0 +1,25 @@
+<%- include('partial/navbar') %>
+
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto p-6" style="background-color: #f8f9fa;">
+  <div class="container" style="max-width: 800px; margin: 0 auto; padding: 30px; background-color: #93bcfa; border-radius: 8px; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);">
+    <h3 class="text-center mb-4" style="color: #000000;">Referral Bonus Details</h3>
+    <% if (bonus) { %>
+      <form action="/admin/refer/update/<%= bonus._id %>" method="POST">
+        <div class="form-group mb-3">
+          <label for="usercount" style="font-weight: 600;">User Count:</label>
+          <input type="number" class="form-control" id="usercount" name="usercount" value="<%= bonus.usercount %>" required style="border-radius: 4px;">
+        </div>
+        <div class="form-group mb-3">
+          <label for="referalbonus" style="font-weight: 600;">Referral Bonus Amount:</label>
+          <input type="number" class="form-control" id="referalbonus" name="referalbonus" value="<%= bonus.referalbonus %>" required style="border-radius: 4px;">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="font-weight: 600;">Update</button>
+      </form>
+    <% } else { %>
+      <p class="text-center" style="font-size: 1.1rem; color: #6c757d;">No referral bonus data available.</p>
+    <% } %>
+  </div>
+</main>
+
+<%- include('partial/sidebar') %>

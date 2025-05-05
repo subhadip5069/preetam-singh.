@@ -1,0 +1,174 @@
+<%- include('partial/navbar') %>
+<main class="flex-1 overflow-y-auto p-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Static Cards -->
+    <div class="bg-white p-4 rounded shadow text-center">
+      <h3 class="text-lg font-semibold">Total Students</h3>
+      <p class="text-2xl">120</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow text-center">
+      <h3 class="text-lg font-semibold">Total Teachers</h3>
+      <p class="text-2xl">35</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow text-center">
+      <h3 class="text-lg font-semibold">Total Courses</h3>
+      <p class="text-2xl">45</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow text-center">
+      <h3 class="text-lg font-semibold">Total Payments</h3>
+      <p class="text-2xl">₹95,000</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow text-center">
+      <h3 class="text-lg font-semibold">Total Withdrawals</h3>
+      <p class="text-2xl">₹68,000</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Daily Payments & Withdrawals -->
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-lg font-semibold mb-4">Daily Payments & Withdrawals</h3>
+      <canvas id="dailyChart"></canvas>
+    </div>
+
+    <!-- Monthly Payments -->
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-lg font-semibold mb-4">Monthly Payments</h3>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <!-- Yearly Payments -->
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-lg font-semibold mb-4">Yearly Payments</h3>
+      <canvas id="yearlyPaymentsChart"></canvas>
+    </div>
+
+    <!-- Monthly Withdrawals -->
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-lg font-semibold mb-4">Monthly Withdrawals</h3>
+      <canvas id="monthlyWithdrawalsChart"></canvas>
+    </div>
+
+    <!-- Yearly Withdrawals -->
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-lg font-semibold mb-4">Yearly Withdrawals</h3>
+      <canvas id="yearlyWithdrawalsChart"></canvas>
+    </div>
+
+    <!-- Full Payment vs Withdrawal -->
+    <div class="bg-white p-4 rounded shadow lg:col-span-2">
+      <h3 class="text-lg font-semibold mb-4">Total Payment vs Withdrawal</h3>
+      <canvas id="fullComparisonChart"></canvas>
+    </div>
+  </div>
+</main>
+<%- include('partial/sidebar') %>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const dailyLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const dailyPayments = [1000, 1500, 1200, 2000, 1800, 2200, 1700];
+  const dailyWithdrawals = [500, 700, 600, 800, 750, 900, 650];
+
+  const yearlyLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
+  const yearlyPayments = [5000, 7000, 6500, 8000, 7600, 9000, 8500, 9500];
+  const yearlyWithdrawals = [3000, 4000, 3500, 4500, 4200, 5000, 4800, 5200];
+
+  const totalPayments = 95000;
+  const totalWithdrawals = 68000;
+
+  // Daily Chart
+  new Chart(document.getElementById("dailyChart"), {
+    type: "bar",
+    data: {
+      labels: dailyLabels,
+      datasets: [
+        {
+          label: "Payments",
+          data: dailyPayments,
+          backgroundColor: "#4ade80"
+        },
+        {
+          label: "Withdrawals",
+          data: dailyWithdrawals,
+          backgroundColor: "#f87171"
+        }
+      ]
+    }
+  });
+
+  // Monthly Payment Pie
+  new Chart(document.getElementById("monthlyChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Payments", "Unused"],
+      datasets: [{
+        data: [45000, 50000],
+        backgroundColor: ["#60a5fa", "#d1d5db"]
+      }]
+    }
+  });
+
+  // Yearly Payments Line
+  new Chart(document.getElementById("yearlyPaymentsChart"), {
+    type: "line",
+    data: {
+      labels: yearlyLabels,
+      datasets: [{
+        label: "Yearly Payments",
+        data: yearlyPayments,
+        borderColor: "#3b82f6",
+        fill: false
+      }]
+    }
+  });
+
+  // Monthly Withdrawal Pie
+  new Chart(document.getElementById("monthlyWithdrawalsChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Withdrawals", "Unused"],
+      datasets: [{
+        data: [32000, 18000],
+        backgroundColor: ["#facc15", "#e5e7eb"]
+      }]
+    }
+  });
+
+  // Yearly Withdrawals Line
+  new Chart(document.getElementById("yearlyWithdrawalsChart"), {
+    type: "line",
+    data: {
+      labels: yearlyLabels,
+      datasets: [{
+        label: "Yearly Withdrawals",
+        data: yearlyWithdrawals,
+        borderColor: "#f97316",
+        fill: false
+      }]
+    }
+  });
+
+  // Full Comparison
+  new Chart(document.getElementById("fullComparisonChart"), {
+    type: "bar",
+    data: {
+      labels: ["Total"],
+      datasets: [
+        {
+          label: "Payments",
+          data: [totalPayments],
+          backgroundColor: "#10b981"
+        },
+        {
+          label: "Withdrawals",
+          data: [totalWithdrawals],
+          backgroundColor: "#ef4444"
+        }
+      ]
+    }
+  });
+</script>

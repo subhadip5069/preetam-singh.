@@ -1,0 +1,60 @@
+<%- include('partial/navbar') %>
+
+
+<main class="flex-1 p-6" >
+    <div class="container mt-5">
+        <h2 class="mb-4">All Courses</h2>
+    
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Category</th> <!-- Added Category column -->
+              <th>Created By</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Validated</th>
+              <th>Status</th>
+              <th>Toggle Status</th>
+              <th>Created At</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <% if (courses.length > 0) { %>
+              <% courses.forEach((course, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= course.title %></td>
+                  <td><span class="badge bg-info" ><%= course.categoryId?.name || "N/A" %></span></td> <!-- Displaying category name -->
+                  <td><%= course.userId?.name || "N/A" %></td>
+                  <td>₹<%= course.price %></td>
+                  <td><%= course.discount %>%</td>
+                  <td><%= course.validated %></td>
+                  <td>
+                    <span class="badge <%= course.status === 'active' ? 'bg-success' : 'bg-danger' %>">
+                      <%= course.status %>
+                    </span>
+                  </td>
+                  <td>
+                    <form action="/admin/course/status/<%= course._id %>" method="POST">
+                      <input type="hidden" name="status" value="<%= course.status === 'active' ? 'inactive' : 'active' %>">
+                      <button type="submit" class="btn btn-sm btn-outline-primary">
+                        Set <%= course.status === 'active' ? 'Inactive' : 'Active' %>
+                      </button>
+                    </form>
+                  </td>
+                  <td><%= new Date(course.createdAt).toLocaleString() %></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="9" class="text-center">No courses found.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+</main>
+<%- include('partial/sidebar') %>

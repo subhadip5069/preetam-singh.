@@ -1,0 +1,105 @@
+<%- include('partial/navbar') %>
+      <!-- Scrollable Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+        <!-- Banner Creation Form -->
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-6">
+    <h2 class="text-xl font-bold mb-4 text-blue-600">Create Banner</h2>
+    <form action="/admin/banner/create" method="POST" enctype="multipart/form-data" class="space-y-4">
+      <input name="title" placeholder="Title" required class="w-full p-2 border rounded" />
+      <textarea name="description" placeholder="Description" required class="w-full p-2 border rounded"></textarea>
+      <input name="link" placeholder="Link" required class="w-full p-2 border rounded" />
+      <form id="bannerForm" enctype="multipart/form-data">
+        <input
+          type="file"
+          name="image"
+          accept=".jpg,.jpeg,.png"
+          required
+          class="w-full"
+          id="imageInput"
+        />
+        <p id="errorMsg" class="text-red-500 mt-2 hidden"></p>
+        <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+          Submit
+        </button>
+      </form>
+      
+      <script>
+        const imageInput = document.getElementById('imageInput');
+        const form = document.getElementById('bannerForm');
+        const errorMsg = document.getElementById('errorMsg');
+      
+        const MAX_SIZE_MB = 2; // Max size in MB
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+      
+        form.addEventListener('submit', function (e) {
+          const file = imageInput.files[0];
+      
+          if (!file) return; // No file selected, allow native validation
+      
+          // Validate file type
+          if (!ALLOWED_TYPES.includes(file.type)) {
+            e.preventDefault();
+            errorMsg.textContent = 'Only JPG and PNG files are allowed.';
+            errorMsg.classList.remove('hidden');
+            return;
+          }
+      
+          // Validate file size
+          const maxSizeBytes = MAX_SIZE_MB * 1024 * 1024;
+          if (file.size > maxSizeBytes) {
+            e.preventDefault();
+            errorMsg.textContent = `File size must be less than ${MAX_SIZE_MB} MB.`;
+            errorMsg.classList.remove('hidden');
+            return;
+          }
+      
+          // All good
+          errorMsg.classList.add('hidden');
+        });
+      </script>
+      
+     
+    </form>
+  </div>
+<style>
+    .banner-image {
+    width: 100%; /* Full width of the container */
+    height: auto; /* Auto-adjust height to maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    object-fit: cover; /* Crop and cover the container while maintaining aspect ratio */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.banner-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+</style>
+  <!-- Banner Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% banners.reverse().forEach(banner => { %>
+      <div class="bg-white rounded shadow p-4 relative">
+        <!-- Edit & Delete Icons -->
+        <div class="absolute top-2 right-2 flex space-x-2 bg-white bg-opacity-100 p-2 rounded-full">
+          <a href="/admin/editbanner/<%= banner._id %>" class="text-blue-600 hover:text-blue-800">
+            <i class="fas fa-edit"></i>
+          </a>
+          <form action="/admin/banner/delete/<%= banner._id %>" method="get" onsubmit="return confirm('Are you sure you want to delete this banner?')">
+            <button type="submit" class="text-red-500 hover:text-red-700 ml-2">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
+        </div>
+  
+        <!-- Full Image -->
+        <img src="/<%= banner.image %>" alt="Banner" class="w-full h-auto object-cover mb-4 rounded" />
+        <h3 class="text-lg font-semibold text-red-500"><%= banner.title %></h3>
+        <p class="text-sm text-gray-700"><%= banner.description %></p>
+        <a href="<%= banner.link %>" target="_blank" class="text-blue-600 underline mt-2 block">Visit Link</a>
+      </div>
+    <% }) %>
+  </div>
+  
+  
+      </main>
+      <%- include('partial/sidebar') %>

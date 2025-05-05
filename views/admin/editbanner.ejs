@@ -1,0 +1,44 @@
+<%- include('partial/navbar') %>
+
+      <!-- Scrollable Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+        <div class="max-w-3xl mx-auto mt-10 bg-white p-6 rounded shadow">
+            <h2 class="text-2xl font-bold text-center mb-6 text-blue-600">Edit Banner</h2>
+          
+            <form action="/admin/banner/update/<%= banners._id %>" method="POST" enctype="multipart/form-data">
+              
+              <div class="mb-4">
+                <label class="block font-semibold mb-1">Title</label>
+                <input type="text" name="title" value="<%= banners.title %>" required class="w-full px-4 py-2 border rounded" />
+              </div>
+          
+              <div class="mb-4">
+                <label class="block font-semibold mb-1">Description</label>
+                <textarea name="description" required class="w-full px-4 py-2 border rounded"><%= banners.description %></textarea>
+              </div>
+          
+              <div class="mb-4">
+                <label class="block font-semibold mb-1">Link</label>
+                <input type="url" name="link" value="<%= banners.link %>" required class="w-full px-4 py-2 border rounded" />
+              </div>
+          
+              <div class="mb-4">
+                <label class="block font-semibold mb-1">Current Image</label>
+                <img src="/<%= banners.image %>" alt="Banner Image" class="h-40 rounded mb-2" />
+              </div>
+          
+              <div class="mb-4">
+                <label class="block font-semibold mb-1">Change Image (JPG/PNG)</label>
+                <input type="file" name="image" accept="image/jpeg, image/png" class="w-full" />
+              </div>
+          
+              <div class="flex justify-between">
+                <a href="/admin/banner" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm rounded">Cancel</a>
+                <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">Update</button>
+              </div>
+            </form>
+          </div>
+          
+  
+      </main>
+      <%- include('partial/sidebar') %>

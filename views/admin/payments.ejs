@@ -1,0 +1,49 @@
+<%- include('partial/navbar') %>
+
+      <!-- Scrollable Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+            <h2 class="mb-4">Payment Records</h2>
+
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>User Name</th>
+                  <th>User Email</th>
+                  <th>Course Title</th>
+                  <th>Price</th>
+                  <th>Amount Paid</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (payments && payments.length > 0) { %>
+                  <% payments.reverse().forEach((payment, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= payment.userId?.name || 'N/A' %></td>
+                      <td><%= payment.userId?.email || 'N/A' %></td>
+                      <td><%= payment.courseId?.title || 'N/A' %></td>
+                      <td>₹<%= payment.courseId?.price || 0 %></td>
+                      <td>₹<%= payment.amount %></td>
+                      <td>
+                        <span class="badge 
+                          <%= payment.status === 'success' ? 'bg-success' : 
+                              payment.status === 'failed' ? 'bg-danger' : 'bg-warning' %>">
+                          <%= payment.status %>
+                        </span>
+                      </td>
+                      <td><%= new Date(payment.createdAt).toLocaleString() %></td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="8" class="text-center">No payment records found.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+      </main>
+      <%- include('partial/sidebar') %>

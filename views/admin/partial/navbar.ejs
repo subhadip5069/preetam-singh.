@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kMVqP74+uL7MZBmBKODppzWTGy5LlmG5xfpQh/wDR6Zs4rNdPn8hZ8npCTk28M+r1lBkB9P1rXU2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+  body {
+    overflow: hidden;
+  }
+  .a{
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    color: #000;
+  }
+.ml-2{
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  color: #000;
+}
+  /* Custom Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #60A5FA;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #F87171;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #60A5FA #f3f4f6;
+  }
+
+
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Wrapper -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <div id="sidebar"
+    class="fixed inset-y-0 left-0 bg-blue-300 border-r w-64 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 shadow-md">
+
+ <div class="px-4 py-4 flex items-center justify-between border-b">
+   <div class="text-2xl font-bold">
+     <span class="text-blue-600">Admin</span><span class="text-red-500"> Panel</span>
+   </div>
+   <button id="closeSidebar" class="md:hidden text-gray-600 hover:text-red-600 text-2xl font-bold">×</button>
+ </div>
+
+ <ul class="p-4 space-y-2">
+   <li>
+     <a href="/admin/dashboard" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 transition a" id="dashboardLink">
+       <i class="fa-solid fa-house"></i> 
+       <span class="ml-2">Dashboard</span>
+     </a>
+   </li>
+   <li>
+    <a href="/admin/users" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-users"></i> <span class="ml-2">Students</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/teachers" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-chalkboard-user"></i> <span class="ml-2">Teachers</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/category" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-tags"></i> <span class="ml-2"> Add Category</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/courses" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-swatchbook"></i> <span class="ml-2">My Courses</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/allcourses" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-book-open"></i> <span class="ml-2">All Courses</span>
+    </a>
+  </li>
+ 
+  <li>
+    <a href="/admin/refer/" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-money-bill-trend-up"></i> <span class="ml-2">Referral Bonus</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/payments" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-credit-card"></i> <span class="ml-2">Payments</span>
+    </a>
+  </li>
+  <li>
+    <a href="/admin/withdrawl" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-money-bill-transfer"></i><span class="ml-2">Withdrawal</span>
+    </a>
+  </li>
+  <!-- constact -->
+  <li>
+    <a href="/admin/contact" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-100 hover:text-blue-600 a transition">
+      <i class="fa-solid fa-headset"></i> <span class="ml-2">Contact</span>
+    </a>
+  </li>
+   
+   <li>
+     <a href="/admin/auth/logout" class="flex items-center px-4 py-2 rounded text-gray-800 hover:bg-red-600 hover:text-blue-100 a transition">
+      <i class="fa-solid fa-arrow-right-from-bracket fa-flip"></i> <span class="ml-2">Logout</span>
+     </a>
+   </li>
+
+ </ul>
+</div>
+
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col w-full md:ml-64 h-screen">
+
+      <!-- Sticky Navbar -->
+      <header class="sticky top-0 z-20 bg-red-400 shadow-md p-4 flex justify-between items-center md:justify-end">
+        <!-- Hamburger for Mobile -->
+        <button id="toggleSidebar" class="md:hidden px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 text-xl">
+          ☰
+        </button>
+        <h1 class="text-lg font-bold hidden md:block">Dashboard</h1>
+        <div class="ml-auto">Demo Admin</div>
+      </header>

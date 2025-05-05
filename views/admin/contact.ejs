@@ -1,0 +1,53 @@
+<%- include('partial/navbar') %>
+
+<main class="flex-1 overflow-y-auto p-6">
+  <h3 class="mb-4">Contact Us Messages</h3>
+
+  <!-- Live Search -->
+  <input type="text" id="searchInput" placeholder="Search by name, email, or subject..." class="form-control w-50 mb-3">
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Received At</th>
+      </tr>
+    </thead>
+    <tbody id="contactTableBody">
+      <% contacts.reverse().forEach((contact, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= contact.name %></td>
+          <td><%= contact.email %></td>
+          <td><%= contact.phone %></td>
+          <td><%= contact.subject %></td>
+          <td><%= contact.message %></td>
+          <td><%= contact.createdAt.toLocaleString() %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</main>
+
+<%- include('partial/sidebar') %>
+
+<!-- Live Search Script -->
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const tableBody = document.getElementById('contactTableBody');
+
+  searchInput.addEventListener('input', function () {
+    const searchTerm = this.value.toLowerCase();
+    const rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+  });
+</script>

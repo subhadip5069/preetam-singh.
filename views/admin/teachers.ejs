@@ -1,0 +1,57 @@
+<%- include('partial/navbar') %>
+
+      <!-- Scrollable Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+            <table class="table table-bordered table-striped mt-4">
+                  
+    <!-- Search Input --><!-- Live Search Input -->
+<input type="text" id="searchInput" placeholder="Search by name, phone, or email..." class="form-control w-50 mb-3">
+
+    
+                  <thead class="table-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Referral Code</th>
+                      <th>Bonus</th>
+                      <th>Referred By</th>
+
+                    </tr>
+                  </thead>
+                  <tbody id="userTableBody">
+                        <% users.reverse().forEach((user, index) => { %>
+                          <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= user.name %></td>
+                            <td><%= user.phone %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.myReferralCode %></td>
+                            <td>₹ <%= user.mybonus %></td>
+                            <td><%= user.refferby || 'N/A' %></td>
+                          </tr>
+                        <% }) %>
+                      </tbody>
+                </table>
+                
+      </main>
+      <%- include('partial/sidebar') %>
+      <script>
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('#userTableBody tr');
+          
+            searchInput.addEventListener('input', function () {
+              const searchTerm = this.value.toLowerCase();
+          
+              tableRows.forEach(row => {
+                const rowText = row.innerText.toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                  row.style.display = '';
+                } else {
+                  row.style.display = 'none';
+                }
+              });
+            });
+          </script>
+          

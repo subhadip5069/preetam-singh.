@@ -1,0 +1,21 @@
+
+</div>
+</div>
+
+<!-- JS for sidebar toggle -->
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggleSidebarBtn = document.getElementById('toggleSidebar');
+  const closeSidebarBtn = document.getElementById('closeSidebar');
+
+  toggleSidebarBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('-translate-x-full');
+  });
+
+  closeSidebarBtn.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+  });
+</script>
+
+</body>
+</html>

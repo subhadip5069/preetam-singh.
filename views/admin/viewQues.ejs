@@ -1,0 +1,95 @@
+<%- include('partial/navbar') %>
+
+<main class="flex-1 overflow-y-auto p-6">
+  <div class="container mt-5">
+    <h1 class="mb-4">Course Documents</h1>
+
+    <% if (courseDocument) { %>
+
+      <!-- Notes (PDF) -->
+      <div class="mb-4">
+        <h3>Notes (PDF)</h3>
+        <% if (courseDocument.notes && courseDocument.notes.length > 0) { %>
+          <ul class="list-group">
+            <% courseDocument.notes.forEach((note, index) => { %>
+              <li class="list-group-item">
+                <a href="/<%= note.replace(/\\/g, '/') %>" target="_blank" class="btn btn-sm btn-outline-primary">
+                  View Note <%= index + 1 %>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="text-muted">No notes available.</p>
+        <% } %>
+      </div>
+
+      <!-- Videos -->
+      <div class="mb-4">
+        <h3>Videos</h3>
+        <% if (courseDocument.videos && courseDocument.videos.length > 0) { %>
+          <ul class="list-group">
+            <% courseDocument.videos.forEach((video, index) => {
+                const trimmedVideo = video.trim();
+                const match = trimmedVideo.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+                const videoId = match ? match[1] : null;
+            %>
+              <li class="list-group-item">
+                <div class="mb-2 fw-bold">Video <%= index + 1 %></div>
+                <% if (videoId) { %>
+                  <div class="ratio ratio-16x9 mb-2">
+                    <iframe src="https://www.youtube.com/embed/<%= videoId %>"
+                            title="YouTube video"
+                            allowfullscreen>
+                    </iframe>
+                  </div>
+                  <a href="<%= trimmedVideo %>" target="_blank" class="btn btn-sm btn-outline-primary">
+                    Watch on YouTube
+                  </a>
+                <% } else { %>
+                  <a href="<%= trimmedVideo %>" target="_blank" class="btn btn-sm btn-outline-success">
+                    Watch Video <%= index + 1 %>
+                  </a>
+                <% } %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="text-muted">No videos available.</p>
+        <% } %>
+      </div>
+      
+
+      <!-- Assignments -->
+      <div class="mb-4">
+        <h3>Assignments</h3>
+        <% if (courseDocument.assignments && courseDocument.assignments.length > 0) { %>
+          <% courseDocument.assignments.forEach((assignment, index) => { %>
+            <div class="card mb-3 shadow-sm">
+              <div class="card-body">
+                <h5 class="mb-2">Q<%= index + 1 %>: <%= assignment.questions %><span class="text-danger">?</span></h5>
+                <strong>Answers:</strong>
+                <ul>
+                  <% assignment.answers.forEach(answer => { %>
+                    <li>🔸 <%= answer %></li>
+                  <% }) %>
+                </ul>
+                <p><strong>✅ Correct Answer:</strong> <%= assignment.correctAnswer %></p>
+                <p><strong>📊 Marks:</strong> <%= assignment.marks %></p>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-muted">No assignments available.</p>
+        <% } %>
+      </div>
+
+    <% } else { %>
+      <div class="alert alert-warning">
+        No course documents found.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('partial/sidebar') %>
