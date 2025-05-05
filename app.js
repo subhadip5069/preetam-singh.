@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const ejs = require("ejs");
 const session = require("express-session");
 const path = require("path");
+const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const connectDB = require("./app/config/DB0000");
+
 
 
 require("dotenv").config();
@@ -23,6 +25,11 @@ app.use(session({
   cookie: { maxAge: 60000 } // 1 minute (adjust as needed)
 }));
 
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 
 app.use(cookieParser());
 app.use(express.json());
