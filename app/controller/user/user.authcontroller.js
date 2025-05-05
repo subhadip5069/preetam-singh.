@@ -173,8 +173,15 @@ class UserController {
           email: user.email,
           myReferralCode: user.myReferralCode,
           referredBy: user.refferby,
+          mybonus: user.mybonus,
+          phone: user.phone,
+          isVerified: user.isVerified,
+          createdAt: user.createdAt,
           role: user.role,
         },
+        token,
+      });
+  
       });
   
     } catch (error) {
