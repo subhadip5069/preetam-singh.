@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
   refferalBonus: {
     type: mongoose.Schema.ObjectId,
     ref: "ReferalBonus"
-  },'
+  },
     isVerified:{
       type:Boolean,
       default:false
