@@ -165,25 +165,24 @@ class UserController {
   
       req.session.message = 'Login successful';
   
+      const me = await User.findById(user._id)
       res.status(200).json({
         message: req.session.message,
         user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          myReferralCode: user.myReferralCode,
-          referredBy: user.refferby,
-          mybonus: user.mybonus,
-          phone: user.phone,
-          isVerified: user.isVerified,
-          createdAt: user.createdAt,
-          role: user.role,
+          id: me._id,
+          name: me.name,
+          email: me.email,
+          myReferralCode: me.myReferralCode,
+          referredBy: me.refferby,
+          mybonus: me.mybonus,
+          phone: me.phone,
+          isVerified: me.isVerified,
+          createdAt: me.createdAt,
+          role: me.role,
         },
         token,
+
       });
-  
-      });
-  
     } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({ message: 'Server error' });
