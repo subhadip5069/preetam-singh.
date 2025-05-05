@@ -54,7 +54,7 @@ class UserController {
   // ✅ Step 2: Verify OTP & Complete Signup
   signup = async (req, res) => {
     try {
-      const { name, email, password, otp, referralCode,phone } = req.body;
+      const { name, email, password, otp, referralCode,phone,role } = req.body;
   
       if (!name || !email || !password || !otp || !phone) {
         req.session.message = 'All fields are required';
@@ -97,6 +97,7 @@ class UserController {
         password: hashedPassword,
         myReferralCode,
         refferby: referredByCode,
+        role
       });
   
       await newUser.save();
