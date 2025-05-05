@@ -54,7 +54,7 @@ class UserController {
   // ✅ Step 2: Verify OTP & Complete Signup
   signup = async (req, res) => {
     try {
-      const { name, email, password, otp, referralCode,phone,role } = req.body;
+      const { name, email, password, otp, referralCode,phone ,role } = req.body;
   
       if (!name || !email || !password || !otp || !phone) {
         req.session.message = 'All fields are required';
@@ -97,8 +97,10 @@ class UserController {
         password: hashedPassword,
         myReferralCode,
         refferby: referredByCode,
-        role
+        role,
+        isVerified: true // 👈 mark as verified after OTP
       });
+      
   
       await newUser.save();
   
@@ -125,25 +127,31 @@ class UserController {
   
       if (!email || !password) {
         req.session.message = 'Email and password are required';
-        // return res.status(400).json({ message: req.session.message });
+        return res.status(400).json({ message: req.session.message });
       }
   
       const user = await User.findOne({ email });
       if (!user) {
         req.session.message = 'User not found';
-        // return res.status(404).json({ message: req.session.message });
+        return res.status(404).json({ message: req.session.message });
+      }
+  
+      // 🔒 Check if user is verified
+      if (!user.isVerified) {
+        req.session.message = 'Please verify your email before logging in';
+        return res.status(403).json({ message: req.session.message });
       }
   
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         req.session.message = 'Invalid password';
-        // return res.status(401).json({ message: req.session.message });
+        return res.status(401).json({ message: req.session.message });
       }
   
       const payload = {
         id: user._id,
         email: user.email,
-        role: user.role || 'user',
+        role: user.role || 'student',
       };
   
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -152,14 +160,10 @@ class UserController {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'Strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
   
       req.session.message = 'Login successful';
-
-
-
-      
   
       res.status(200).json({
         message: req.session.message,
@@ -169,14 +173,16 @@ class UserController {
           email: user.email,
           myReferralCode: user.myReferralCode,
           referredBy: user.refferby,
-        }
+          role: user.role,
+        },
       });
+  
     } catch (error) {
-      // console.error('Login Error:', error);
-      req.session.message = 'Server error';
-      res.status(500).json({ message: req.session.message });
+      console.error('Login error:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   };
+  
   
   logout = (req, res) => {
     res.clearCookie('token');
