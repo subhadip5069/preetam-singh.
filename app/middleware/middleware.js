@@ -1,38 +1,28 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token; // Get token from cookies
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
-      //console.log("No token found in cookies.");
-      req.user = null;
-      return next();
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    req.user = null;
+    return next(); // Let route decide if auth is required
   }
+
+  const token = authHeader.split(" ")[1];
 
   try {
-     
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-
-      req.user = decoded; // Attach user data to request object
-      next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach user info
+    next();
   } catch (error) {
-       
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Session expired. Please log in again." });
+    }
 
-      if (error.name === "TokenExpiredError") {
-          res.clearCookie("token");
-          return req.session.message = "Session expired. Please log in again." 
-      }
-      
-      // Option 1: Send an error response for invalid tokens
-      // return res.status(401).json({ message: "Invalid token. Please log in again." });
-
-      // Option 2: Allow unauthenticated access (comment out Option 1 if not needed)
-      req.user = null;
-      next();
+    req.user = null;
+    return next();
   }
 };
-
 
 
 const AdminauthMiddleware = (req, res, next) => {
