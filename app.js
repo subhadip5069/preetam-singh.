@@ -26,10 +26,11 @@ app.use(session({
 }));
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3000", // your React frontend
   methods: ["GET", "POST"],
-  credentials: true
+  credentials: true,               // allow cookies
 }));
+
 
 app.use(cookieParser());
 app.use(express.json());
