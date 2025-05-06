@@ -26,7 +26,7 @@ app.use(session({
 }));
 
 app.use(cors({
-  origin: "http://localhost:3000","http://digitalcors.netlify.app"  // your React frontend
+  origin: ["http://localhost:3000","http://digitalcors.netlify.app"]  // your React frontend
   methods: ["GET", "POST"],
   credentials: true,               // allow cookies
 }));
