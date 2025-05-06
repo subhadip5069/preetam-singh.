@@ -56,7 +56,7 @@ class userpagesController{
   };
   
     profile=async(req, res)=>{
-        const user = req.user?.id || "6818a8fafb941945ce4917ce";
+        const user = req.user?.id;
         const refferalbonus = await ReferalBonus.findOne()
         const me = await User.findById(user);
         const payment = await Payment.find({userId:user})
