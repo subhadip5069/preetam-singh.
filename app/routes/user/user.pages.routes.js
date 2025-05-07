@@ -5,7 +5,7 @@ const router = express.Router();
 const userpagesController = require('../../controller/user/user.pages.controller');
 const {authMiddleware} = require("../../middleware/middleware")
 // User Pages Routes
-router.get('/', authMiddleware,userpagesController.index);
+router.get('/', authMiddleware,userpagesController.apifrouser);
 router.get('/profile',authMiddleware, userpagesController.profile);
 router.get('/contact',authMiddleware, userpagesController.contact);
 router.get('/about',authMiddleware ,userpagesController.about);
