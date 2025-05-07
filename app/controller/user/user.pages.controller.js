@@ -29,7 +29,10 @@ function shuffleArray(array) {
     return '';
   }
 class userpagesController{
-
+    apifrouser=async(req,res) =>{
+        const user = req.user?.id
+        return res.json({ user });
+    }
   index = async (req, res) => {
     try {
       const user = req.user?.id;
